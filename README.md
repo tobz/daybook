@@ -15,14 +15,14 @@ The premise is, wait for it, simple: you put all of your service assets -- these
 How do I use it?
 =======
 
-Using *daybook-pull*, you can start pulling down assets now.  There's an example configuration file that you can drop into place on the hosts you want to use Daybook with.  This will let you specify AWS credentials, bucket name, base installation directory and the hostname to use when querying Consul.  If the file doesn't exist, *daybook-pull* will assume defaults for all of these values - try to connect locally to Consul, look for environment variables or an instance IAM profile to get AWS credentials, etc.  You'll probably want to put the configuration in place to specify the bucket name and installation directory - those are the things that almost certainly don't have defaults you can afford to work with.
+Using `daybook-pull`, you can start pulling down assets now.  There's an example configuration file that you can drop into place on the hosts you want to use Daybook with.  This will let you specify AWS credentials, bucket name, base installation directory and the hostname to use when querying Consul.  If the file doesn't exist, `daybook-pull` will assume defaults for all of these values - try to connect locally to Consul, look for environment variables or an instance IAM profile to get AWS credentials, etc.  You'll probably want to put the configuration in place to specify the bucket name and installation directory - those are the things that almost certainly don't have defaults you can afford to work with.
 
-Using *daybook-push*, you can push assets into S3 ensuring that naming schemes are correct for *daybook-pull* to function.  This tool can take advantage of the same configuration format used by *daybook-pull*, but it only cares about the AWS credentials and S3 bucket name.
+Using `daybook-push`, you can push assets into S3 ensuring that naming schemes are correct for `daybook-pull` to function.  This tool can take advantage of the same configuration format used by `daybook-pull`, but it only cares about the AWS credentials and S3 bucket name.
 
 Tell me more about the specifics
 =======
 
-*daybook-pull* makes some assumptions.  Firstly, your assets are structured in a particular fashion.  This is roughly enforced by *daybook-push*, if you use it, but since it's just S3, there's no reason you can't upload assets on your own.  
+`daybook-pull` makes some assumptions.  Firstly, your assets are structured in a particular fashion.  This is roughly enforced by `daybook-push`, if you use it, but since it's just S3, there's no reason you can't upload assets on your own.  
 
 Your assets need to meet the following requirements:
 
@@ -34,7 +34,7 @@ Your assets need to meet the following requirements:
 
 Secondly, it assumes you want all versions of a given service on disk.  Service discovery, and thus which version to use, is an entirely separate problem that Daybook doesn't try to solve.  Disk space is cheap, and it's simpler to assume we want a synchronized universe of service code than to pick and choose.  There may or may not be a future improvement to limit scope or try and detect what we already have... but it's not on the immediate horizon.  Sorry, people with a million JAR files that are 90MB a piece.
 
-When you do a pull, *daybook-pull* will load the configuration, connect to Consul and look for patterns that match the hostname it has.  The hostname is either what's in the configuration file, or if that's empty, what it is able to get from the OS.  If it can't do that, it will whine and exit.
+When you do a pull, `daybook-pull` will load the configuration, connect to Consul and look for patterns that match the hostname it has.  The hostname is either what's in the configuration file, or if that's empty, what it is able to get from the OS.  If it can't do that, it will whine and exit.
 
 For all the patterns it finds that could match the hostname given, it figures out which one is most specific.  The patterns can use asterisks for a wildcard.  They aren't full regular expressions, because trying to determine specificity from a regular expression is non-trivial.  Wildcards work 99% of the time, and the longest matching pattern is implicitly the most specific pattern.  Simple.
 
