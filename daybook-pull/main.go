@@ -21,7 +21,7 @@ func main() {
 		log.Fatalf("Failed to get AWS credentials from environment: %s", err)
 	}
 
-	store := daybook.NewS3Store(auth, aws.USEast, "bluestatedigital-daybook")
+	store := daybook.NewS3Store(auth, aws.USEast, "daybook")
 
 	log.Printf("Getting services from register...")
 
