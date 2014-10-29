@@ -28,9 +28,9 @@ Your assets need to meet the following requirements:
 
 - it has to be a tarball (gzip compressed tar archive, with the ".tar.gz" extension; this is hard-coded)
 - the filename must be in the form of: service_name-version.tar.gz
--- the service name can be any alphanumeric characters, including underscores.  hyphens aren't allowed because they're the name/version delimiter
--- the version can also be alphanumeric characters, including underscores
--- the extension, as mentioned above, needs to be ".tar.gz"
+- the service name can be any alphanumeric characters, including underscores.  hyphens aren't allowed because they're the name/version delimiter
+- the version can also be alphanumeric characters, including underscores
+- the extension, as mentioned above, needs to be ".tar.gz"
 
 Secondly, it assumes you want all versions of a given service on disk.  Service discovery, and thus which version to use, is an entirely separate problem that Daybook doesn't try to solve.  Disk space is cheap, and it's simpler to assume we want a synchronized universe of service code than to pick and choose.  There may or may not be a future improvement to limit scope or try and detect what we already have... but it's not on the immediate horizon.  Sorry, people with a million JAR files that are 90MB a piece.
 
