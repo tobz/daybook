@@ -1,0 +1,7 @@
+{
+    "hostname": "test-host",
+    "bucket_name": "service-assets"
+    "install_dir": "/var/company/services",
+    "aws_access_key": "xxxxx",
+    "aws_secret_key": "yyyyy"
+}

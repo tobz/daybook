@@ -5,7 +5,6 @@ import "os"
 import "strings"
 import "github.com/mitchellh/goamz/aws"
 import "github.com/mitchellh/goamz/s3"
-import "github.com/tobz/daybook/archive"
 
 type Store interface {
 	GetAll(serviceName string) ([]*Service, error)
@@ -59,7 +58,7 @@ func (s *S3Store) Get(service *Service) (Archive, error) {
 		return nil, err
 	}
 
-	return archive.NewTarGzArchive(rc), nil
+	return NewTarGzArchive(rc), nil
 }
 
 func (s *S3Store) Put(service *Service, filePath string) error {
