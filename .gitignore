@@ -24,3 +24,4 @@ _testmain.go
 *.prof
 
 daybook-pull/daybook-pull
+daybook-push/daybook-push
