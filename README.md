@@ -3,6 +3,8 @@ daybook
 
 opinionated service deployment management
 
+![daybook](http://i.imgur.com/WNo8CMU.png)
+
 whats it do
 =======
 
