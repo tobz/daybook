@@ -15,9 +15,7 @@ The premise is, wait for it, simple: you put all of your service assets -- these
 How do I use it?
 =======
 
-Using `daybook-pull`, you can start pulling down assets now.  There's an example configuration file that you can drop into place on the hosts you want to use Daybook with.  This will let you specify AWS credentials, bucket name, base installation directory and the hostname to use when querying Consul.  If the file doesn't exist, `daybook-pull` will assume defaults for all of these values - try to connect locally to Consul, look for environment variables or an instance IAM profile to get AWS credentials, etc.  You'll probably want to put the configuration in place to specify the bucket name and installation directory - those are the things that almost certainly don't have defaults you can afford to work with.
-
-Using `daybook-push`, you can push assets into S3 ensuring that naming schemes are correct for `daybook-pull` to function.  This tool can take advantage of the same configuration format used by `daybook-pull`, but it only cares about the AWS credentials and S3 bucket name.
+Check out the [quick start guide](docs/quick-start-guide.md) for hitting the ground running.
 
 Tell me more about the specifics
 =======
