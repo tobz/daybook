@@ -148,10 +148,17 @@ func (r *ConsulRegister) RemoveServices(pattern string, services []string) error
 		final = append(final, k)
 	}
 
-	newKv := &consulapi.KVPair{Key: BASE_PREFIX + pattern, Value: []byte(strings.Join(final, ","))}
-	_, err = r.client.Put(newKv, nil)
-	if err != nil {
-		return err
+	if len(final) > 0 {
+		newKv := &consulapi.KVPair{Key: BASE_PREFIX + pattern, Value: []byte(strings.Join(final, ","))}
+		_, err = r.client.Put(newKv, nil)
+		if err != nil {
+			return err
+		}
+	} else {
+		_, err := r.client.Delete(BASE_PREFIX+pattern, nil)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
