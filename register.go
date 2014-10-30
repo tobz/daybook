@@ -86,7 +86,12 @@ func (r *ConsulRegister) AddServices(pattern string, services []string) error {
 		return err
 	}
 
-	existing := strings.Split(string(kv.Value), ",")
+	existing := []string{}
+
+	if kv != nil {
+		existing = strings.Split(string(kv.Value), ",")
+	}
+
 	existing = append(existing, services...)
 
 	uniques := make(map[string]struct{})
@@ -115,6 +120,10 @@ func (r *ConsulRegister) RemoveServices(pattern string, services []string) error
 	kv, _, err := r.client.Get(BASE_PREFIX+pattern, nil)
 	if err != nil {
 		return err
+	}
+
+	if kv == nil {
+		return fmt.Errorf("pattern '%s' does not exist", pattern)
 	}
 
 	existing := strings.Split(string(kv.Value), ",")
