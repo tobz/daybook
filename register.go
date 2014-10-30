@@ -1,5 +1,6 @@
 package daybook
 
+import "fmt"
 import "log"
 import "sort"
 import "path"
@@ -24,6 +25,9 @@ func (sl SpecifierList) Swap(i, j int) {
 
 type Register interface {
 	GetServices(host string) ([]*Service, error)
+	AddServices(pattern string, services []string) error
+	RemoveServices(pattern string, services []string) error
+	ListServices(pattern string) ([]string, error)
 }
 
 type ConsulRegister struct {
@@ -74,4 +78,85 @@ func (r *ConsulRegister) GetServices(host string) ([]*Service, error) {
 	}
 
 	return nil, nil
+}
+
+func (r *ConsulRegister) AddServices(pattern string, services []string) error {
+	kv, _, err := r.client.Get(BASE_PREFIX+pattern, nil)
+	if err != nil {
+		return err
+	}
+
+	existing := strings.Split(string(kv.Value), ",")
+	existing = append(existing, services...)
+
+	uniques := make(map[string]struct{})
+	for _, s := range existing {
+		_, ok := uniques[s]
+		if !ok {
+			uniques[s] = struct{}{}
+		}
+	}
+
+	final := make([]string, 0)
+	for k, _ := range uniques {
+		final = append(final, k)
+	}
+
+	newKv := &consulapi.KVPair{Key: BASE_PREFIX + pattern, Value: []byte(strings.Join(final, ","))}
+	_, err = r.client.Put(newKv, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *ConsulRegister) RemoveServices(pattern string, services []string) error {
+	kv, _, err := r.client.Get(BASE_PREFIX+pattern, nil)
+	if err != nil {
+		return err
+	}
+
+	existing := strings.Split(string(kv.Value), ",")
+
+	uniques := make(map[string]struct{})
+	for _, s := range existing {
+		_, ok := uniques[s]
+		if !ok {
+			uniques[s] = struct{}{}
+		}
+	}
+
+	for _, s := range services {
+		_, ok := uniques[s]
+		if ok {
+			delete(uniques, s)
+		}
+	}
+
+	final := make([]string, 0)
+	for k, _ := range uniques {
+		final = append(final, k)
+	}
+
+	newKv := &consulapi.KVPair{Key: BASE_PREFIX + pattern, Value: []byte(strings.Join(final, ","))}
+	_, err = r.client.Put(newKv, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *ConsulRegister) ListServices(pattern string) ([]string, error) {
+	kv, _, err := r.client.Get(BASE_PREFIX+pattern, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if kv == nil {
+		return nil, fmt.Errorf("pattern '%s' does not exist", pattern)
+	}
+
+	return strings.Split(string(kv.Value), ","), nil
 }
